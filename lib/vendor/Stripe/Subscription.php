@@ -1,57 +1,98 @@
 <?php
 
-class Stripe_Subscription extends Stripe_ApiResource
+namespace Stripe;
+
+/**
+ * Class Subscription
+ *
+ * @property string $id
+ * @property string $object
+ * @property float $application_fee_percent
+ * @property string $billing
+ * @property int $billing_cycle_anchor
+ * @property mixed $billing_thresholds
+ * @property bool $cancel_at_period_end
+ * @property int $canceled_at
+ * @property string $collection_method
+ * @property int $created
+ * @property int $current_period_end
+ * @property int $current_period_start
+ * @property string $customer
+ * @property int $days_until_due
+ * @property string $default_payment_method
+ * @property string $default_source
+ * @property array $default_tax_rates
+ * @property Discount $discount
+ * @property int $ended_at
+ * @property Collection $items
+ * @property string $latest_invoice
+ * @property boolean $livemode
+ * @property StripeObject $metadata
+ * @property Plan $plan
+ * @property int $quantity
+ * @property SubscriptionSchedule $schedule
+ * @property int $start
+ * @property int $start_date
+ * @property string $status
+ * @property float $tax_percent
+ * @property int $trial_end
+ * @property int $trial_start
+ *
+ * @package Stripe
+ */
+class Subscription extends ApiResource
 {
-  /**
-   * @return string The API URL for this Stripe subscription.
-   */
-  public function instanceUrl()
-  {
-    $id = $this['id'];
-    $customer = $this['customer'];
-    if (!$id) {
-      throw new Stripe_InvalidRequestError(
-          "Could not determine which URL to request: " .
-          "class instance has invalid ID: $id",
-          null
-      );
+    const OBJECT_NAME = "subscription";
+
+    use ApiOperations\All;
+    use ApiOperations\Create;
+    use ApiOperations\Delete {
+        delete as protected _delete;
     }
-    $id = Stripe_ApiRequestor::utf8($id);
-    $customer = Stripe_ApiRequestor::utf8($customer);
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 
-    $base = self::classUrl('Stripe_Customer');
-    $customerExtn = urlencode($customer);
-    $extn = urlencode($id);
-    return "$base/$customerExtn/subscriptions/$extn";
-  }
+    /**
+     * These constants are possible representations of the status field.
+     *
+     * @link https://stripe.com/docs/api#subscription_object-status
+     */
+    const STATUS_ACTIVE             = 'active';
+    const STATUS_CANCELED           = 'canceled';
+    const STATUS_PAST_DUE           = 'past_due';
+    const STATUS_TRIALING           = 'trialing';
+    const STATUS_UNPAID             = 'unpaid';
+    const STATUS_INCOMPLETE         = 'incomplete';
+    const STATUS_INCOMPLETE_EXPIRED = 'incomplete_expired';
 
-  /**
-   * @param array|null $params
-   * @return Stripe_Subscription The deleted subscription.
-   */
-  public function cancel($params=null)
-  {
-    $class = get_class();
-    return self::_scopedDelete($class, $params);
-  }
+    public static function getSavedNestedResources()
+    {
+        static $savedNestedResources = null;
+        if ($savedNestedResources === null) {
+            $savedNestedResources = new Util\Set([
+                'source',
+            ]);
+        }
+        return $savedNestedResources;
+    }
 
-  /**
-   * @return Stripe_Subscription The saved subscription.
-   */
-  public function save()
-  {
-    $class = get_class();
-    return self::_scopedSave($class);
-  }
+    /**
+     * @param array|null $params
+     *
+     * @return Subscription The deleted subscription.
+     */
+    public function cancel($params = null, $opts = null)
+    {
+        return $this->_delete($params, $opts);
+    }
 
-  /**
-   * @return Stripe_Subscription The updated subscription.
-   */
-  public function deleteDiscount()
-  {
-    $requestor = new Stripe_ApiRequestor($this->_apiKey);
-    $url = $this->instanceUrl() . '/discount';
-    list($response, $apiKey) = $requestor->request('delete', $url);
-    $this->refreshFrom(array('discount' => null), $apiKey, true);
-  }
+    /**
+     * @return Subscription The updated subscription.
+     */
+    public function deleteDiscount()
+    {
+        $url = $this->instanceUrl() . '/discount';
+        list($response, $opts) = $this->_request('delete', $url);
+        $this->refreshFrom(['discount' => null], $opts, true);
+    }
 }

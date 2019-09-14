@@ -1,58 +1,39 @@
 <?php
 
-class Stripe_InvoiceItem extends Stripe_ApiResource
+namespace Stripe;
+
+/**
+ * Class InvoiceItem
+ *
+ * @property string $id
+ * @property string $object
+ * @property int $amount
+ * @property string $currency
+ * @property string $customer
+ * @property int $date
+ * @property string $description
+ * @property bool $discountable
+ * @property string $invoice
+ * @property bool $livemode
+ * @property StripeObject $metadata
+ * @property mixed $period
+ * @property Plan $plan
+ * @property bool $proration
+ * @property int $quantity
+ * @property string $subscription
+ * @property string $subscription_item
+ * @property array $tax_rates
+ * @property int $unit_amount
+ *
+ * @package Stripe
+ */
+class InvoiceItem extends ApiResource
 {
-  /**
-   * @param string $id The ID of the invoice item to retrieve.
-   * @param string|null $apiKey
-   *
-   * @return Stripe_InvoiceItem
-   */
-  public static function retrieve($id, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedRetrieve($class, $id, $apiKey);
-  }
+    const OBJECT_NAME = "invoiceitem";
 
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return array An array of Stripe_InvoiceItems.
-   */
-  public static function all($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedAll($class, $params, $apiKey);
-  }
-
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return Stripe_InvoiceItem The created invoice item.
-   */
-  public static function create($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedCreate($class, $params, $apiKey);
-  }
-
-  /**
-   * @return Stripe_InvoiceItem The saved invoice item.
-   */
-  public function save()
-  {
-    $class = get_class();
-    return self::_scopedSave($class);
-  }
-
-  /**
-   * @return Stripe_InvoiceItem The deleted invoice item.
-   */
-  public function delete($params=null)
-  {
-    $class = get_class();
-    return self::_scopedDelete($class, $params);
-  }
+    use ApiOperations\All;
+    use ApiOperations\Create;
+    use ApiOperations\Delete;
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 }

@@ -1,75 +1,47 @@
 <?php
 
-class Stripe_Recipient extends Stripe_ApiResource
+namespace Stripe;
+
+/**
+ * Class Recipient
+ *
+ * @package Stripe
+ *
+ * @property string $id
+ * @property string $object
+ * @property mixed $active_account
+ * @property Collection $cards
+ * @property int $created
+ * @property string $default_card
+ * @property string $description
+ * @property string $email
+ * @property bool $livemode
+ * @property StripeObject $metadata
+ * @property string $migrated_to
+ * @property string $name
+ * @property string $rolled_back_from
+ * @property string $type
+ */
+class Recipient extends ApiResource
 {
-  /**
-   * @param string $id The ID of the recipient to retrieve.
-   * @param string|null $apiKey
-   *
-   * @return Stripe_Recipient
-   */
-  public static function retrieve($id, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedRetrieve($class, $id, $apiKey);
-  }
+    const OBJECT_NAME = "recipient";
 
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return array An array of Stripe_Recipients.
-   */
-  public static function all($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedAll($class, $params, $apiKey);
-  }
+    use ApiOperations\All;
+    use ApiOperations\Create;
+    use ApiOperations\Delete;
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return Stripe_Recipient The created recipient.
-   */
-  public static function create($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedCreate($class, $params, $apiKey);
-  }
-
-  /**
-   * @return Stripe_Recipient The saved recipient.
-   */
-  public function save()
-  {
-    $class = get_class();
-    return self::_scopedSave($class);
-  }
-
-  /**
-   * @param array|null $params
-   *
-   * @return Stripe_Recipient The deleted recipient.
-   */
-  public function delete($params=null)
-  {
-    $class = get_class();
-    return self::_scopedDelete($class, $params);
-  }
-
-  
-  /**
-   * @param array|null $params
-   *
-   * @return array An array of the recipient's Stripe_Transfers.
-   */
-  public function transfers($params=null)
-  {
-    if (!$params)
-      $params = array();
-    $params['recipient'] = $this->id;
-    $transfers = Stripe_Transfer::all($params, $this->_apiKey);
-    return $transfers;
-  }
+    /**
+     * @param array|null $params
+     *
+     * @return Collection of the Recipient's Transfers
+     */
+    public function transfers($params = null)
+    {
+        $params = $params ?: [];
+        $params['recipient'] = $this->id;
+        $transfers = Transfer::all($params, $this->_opts);
+        return $transfers;
+    }
 }

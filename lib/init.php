@@ -50,8 +50,9 @@ if ( preg_match('/install/', $_SERVER['REQUEST_URI']) ) {
 	$config = array_merge($config, $config_arr);
 
 	/* set stripe credentials */
-	if ( !empty($config['stripe_secret_key']) ) {
-		Stripe::setApiKey(trim($config['stripe_secret_key']));
+	if ( !empty($config['stripe_secret_key']) ) {		
+		// Stripe::setApiKey(trim($config['stripe_secret_key']));
+		\Stripe\Stripe::setApiKey(trim($config['stripe_secret_key']));
 	}
 
 	/* redirect to https now if we need to */

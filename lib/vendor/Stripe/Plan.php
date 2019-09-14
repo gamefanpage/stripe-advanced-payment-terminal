@@ -1,60 +1,39 @@
 <?php
 
-class Stripe_Plan extends Stripe_ApiResource
+namespace Stripe;
+
+/**
+ * Class Plan
+ *
+ * @package Stripe
+ *
+ * @property string $id
+ * @property string $object
+ * @property bool $active
+ * @property string $aggregate_usage
+ * @property int $amount
+ * @property string $billing_scheme
+ * @property int $created
+ * @property string $currency
+ * @property string $interval
+ * @property int $interval_count
+ * @property bool $livemode
+ * @property StripeObject $metadata
+ * @property string $nickname
+ * @property string $product
+ * @property mixed $tiers
+ * @property string $tiers_mode
+ * @property mixed $transform_usage
+ * @property int $trial_period_days
+ * @property string $usage_type
+ */
+class Plan extends ApiResource
 {
-  /**
-   * @param string $id The ID of the plan to retrieve.
-   * @param string|null $apiKey
-   *
-   * @return Stripe_Plan
-   */
-  public static function retrieve($id, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedRetrieve($class, $id, $apiKey);
-  }
+    const OBJECT_NAME = "plan";
 
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return Stripe_Plan The created plan.
-   */
-  public static function create($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedCreate($class, $params, $apiKey);
-  }
-
-  /**
-   * @param array|null $params
-   *
-   * @return Stripe_Plan The deleted plan.
-   */
-  public function delete($params=null)
-  {
-    $class = get_class();
-    return self::_scopedDelete($class, $params);
-  }
-  
-  /**
-   * @return Stripe_Plan The saved plan.
-   */
-  public function save()
-  {
-    $class = get_class();
-    return self::_scopedSave($class);
-  }
-  
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return array An array of Stripe_Plans.
-   */
-  public static function all($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedAll($class, $params, $apiKey);
-  }
+    use ApiOperations\All;
+    use ApiOperations\Create;
+    use ApiOperations\Delete;
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 }

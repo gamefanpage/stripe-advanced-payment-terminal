@@ -234,6 +234,7 @@ if ( isset($error) ) {
 										<div class="col-md-8 col-xs-8 pr5">
 											<select name="state" class="form-control" data-rule-required="true">
 												<option value="">-- Select State --</option>
+												<option value="N/A">Other / Not applicable</option>
 												<?php foreach ( states() as $country_name => $states_arr ) : ?>
 												<optgroup label="<?php echo $country_name; ?>">
 													<?php foreach ( $states_arr as $state_code => $state_name ) : ?>
@@ -241,7 +242,6 @@ if ( isset($error) ) {
 													<?php endforeach; ?>
 												</optgroup>
 												<?php endforeach; ?>
-												<option value="N/A">Other</option>
 											</select>
 										</div>
 										<div class="col-md-4 col-xs-4 pl5">

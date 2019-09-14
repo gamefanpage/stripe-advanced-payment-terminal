@@ -1,60 +1,35 @@
 <?php
 
-class Stripe_Coupon extends Stripe_ApiResource
+namespace Stripe;
+
+/**
+ * Class Coupon
+ *
+ * @property string $id
+ * @property string $object
+ * @property int $amount_off
+ * @property int $created
+ * @property string $currency
+ * @property string $duration
+ * @property int $duration_in_months
+ * @property bool $livemode
+ * @property int $max_redemptions
+ * @property StripeObject $metadata
+ * @property string $name
+ * @property float $percent_off
+ * @property int $redeem_by
+ * @property int $times_redeemed
+ * @property bool $valid
+ *
+ * @package Stripe
+ */
+class Coupon extends ApiResource
 {
-  /**
-   * @param string $id The ID of the coupon to retrieve.
-   * @param string|null $apiKey
-   *
-   * @return Stripe_Coupon
-   */
-  public static function retrieve($id, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedRetrieve($class, $id, $apiKey);
-  }
+    const OBJECT_NAME = "coupon";
 
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return Stripe_Coupon The created coupon.
-   */
-  public static function create($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedCreate($class, $params, $apiKey);
-  }
-
-  /**
-   * @param array|null $params
-   *
-   * @return Stripe_Coupon The deleted coupon.
-   */
-  public function delete($params=null)
-  {
-    $class = get_class();
-    return self::_scopedDelete($class, $params);
-  }
-
-  /**
-   * @return Stripe_Coupon The saved coupon.
-   */
-  public function save()
-  {
-    $class = get_class();
-    return self::_scopedSave($class);
-  }
-
-  /**
-   * @param array|null $params
-   * @param string|null $apiKey
-   *
-   * @return array An array of Stripe_Coupons.
-   */
-  public static function all($params=null, $apiKey=null)
-  {
-    $class = get_class();
-    return self::_scopedAll($class, $params, $apiKey);
-  }
+    use ApiOperations\All;
+    use ApiOperations\Create;
+    use ApiOperations\Delete;
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 }
